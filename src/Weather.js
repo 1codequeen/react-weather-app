@@ -1,19 +1,42 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./Weather.css";
-export default function Weather() {
-  const [ready, setReady] = useState(false);
-  const [temperature, setTemperature] = useState(null);
+import WeatherInfo from "./WeatherInfo";
+export default function Weather(props) {
+  const [weatherData, setWeatherData] = useState({ready: false});
+  const [city, setCity] = useState(props.defaultCity);
 
-  function handleResponse(response) {
-    console.log(response.data);
-    setTemperature(response.data.temperature.current);
-    setReady(true);
-  }
-if (ready) {
+ function handleResponse(response) {
+  setWeatherData({
+    ready: true,
+    temperature: response.data.temperature.current,
+    city: response.data.city,
+    description: response.data.condition.description,
+    icon: "https://www.gstatic.com/weather/conditions/v1/svg/sunny_light.svg",
+    humidity: response.data.temperature.humidity,
+    wind: response.data.wind.speed,
+    date: new Date(response.data.time * 1000),
+  });
+}
+function search() {
+  const apiKey = "9435699d6f2a3f2cd6b3e67t0o99669e";
+  const apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}`;
+  axios.get(apiUrl).then(handleResponse);
+}
+
+function handleSubmit(event) {
+  event.preventDefault();
+  search();
+  
+}
+function handleCityChange(event) {
+  setCity(event.target.value);
+}
+  
+if (weatherData.ready) {
   return (
     <div className="Weather">
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="row">
           <div className="col-9">
             <input
@@ -21,6 +44,7 @@ if (ready) {
               placeholder="Enter a city..."
               className="form-control"
               autoFocus
+              onChange={handleCityChange}
             />
           </div>
           <div className="col-3">
@@ -32,39 +56,11 @@ if (ready) {
           </div>
         </div>
       </form>
-      <h1>Lisbon</h1>
-      <ul>
-        <li> Monday 10:00</li> <li> Mostly Cloudy</li>
-      </ul>
-
-      <div className="row mt-3">
-        <div className="col-6">
-          <div className="weather-temperature">
-            <img
-              src="https://www.gstatic.com/weather/conditions/v1/svg/partly_cloudy_light.svg"
-              alt="Mostly Cloudy"
-            />
-          </div>
-          <div className="temperature-container">
-            <span className="temperature">{temperature}</span>
-            <span className="unit">°C</span>
-          </div>
-        </div>
-        <div className="col-4 offset-2">
-          <ul>
-            <li>Precipitation: 10%</li> <li>Humidity: 70%</li>
-            <li>Wind: 12 km/h</li>
-          </ul>
-        </div>
-      </div>
+      <WeatherInfo data={weatherData} />
     </div>
-  );
+  );     
 }else {
-const apiKey = "bf54175800a55e59e6c4d6461deeef12";
-let city = "Lisbon";
-const apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}`;
-axios.get(apiUrl).then(handleResponse);
-
+search();
 return "Loading...";
 }
 }
