@@ -2,38 +2,45 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./Weather.css";
 import WeatherInfo from "./WeatherInfo";
+
 export default function Weather(props) {
-  const [weatherData, setWeatherData] = useState({ready: false});
+  const [weatherData, setWeatherData] = useState({ ready: false });
   const [city, setCity] = useState(props.defaultCity);
 
- function handleResponse(response) {
-  setWeatherData({
-    ready: true,
-    temperature: response.data.temperature.current,
-    city: response.data.city,
-    description: response.data.condition.description,
-    icon: "https://www.gstatic.com/weather/conditions/v1/svg/sunny_light.svg",
-    humidity: response.data.temperature.humidity,
-    wind: response.data.wind.speed,
-    date: new Date(response.data.time * 1000),
-  });
-}
-function search() {
-  const apiKey = "9435699d6f2a3f2cd6b3e67t0o99669e";
-  const apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}`;
-  axios.get(apiUrl).then(handleResponse);
-}
+  function handleResponse(response) {
+    setWeatherData({
+      ready: true,
+      temperature: response.data.temperature.current,
+      city: response.data.city,
+      description: response.data.condition.description,
+      humidity: response.data.temperature.humidity,
+      wind: response.data.wind.speed,
+      date: new Date(response.data.time * 1000),
+      code: response.data.condition.icon,
+    });
+  }
 
-function handleSubmit(event) {
-  event.preventDefault();
-  search();
+  function search() {
+    const apiKey = "9435699d6f2a3f2cd6b3e67t0o99669e";
+    const apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}`;
+    axios.get(apiUrl).then(handleResponse);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    search();
+  }
+
+  function handleCityChange(event) {
+    setCity(event.target.value);
+  }
+
   
-}
-function handleCityChange(event) {
-  setCity(event.target.value);
-}
-  
-if (weatherData.ready) {
+  if (!weatherData.ready) {
+    search();
+    return "Loading...";
+  }
+
   return (
     <div className="Weather">
       <form onSubmit={handleSubmit}>
@@ -56,11 +63,8 @@ if (weatherData.ready) {
           </div>
         </div>
       </form>
+
       <WeatherInfo data={weatherData} />
     </div>
-  );     
-}else {
-search();
-return "Loading...";
-}
+  );
 }
