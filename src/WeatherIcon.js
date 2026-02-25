@@ -5,15 +5,16 @@ export default function WeatherIcon(props) {
   const codeMapping = {
     "clear-sky-day": "CLEAR_DAY",
     "clear-sky-night": "CLEAR_NIGHT",
-    "partly-cloudy-day": "PARTLY_CLOUDY_DAY",
-    "partly-cloudy-night": "PARTLY_CLOUDY_NIGHT",
-    cloudy: "CLOUDY",
+    "few-cloudy-day": "PARTLY_CLOUDY_DAY",
+    "few-cloudy-night": "PARTLY_CLOUDY_NIGHT",
+    "broken-clouds-day": "CLOUDY",
+    "broken-clouds-night": "CLOUDY",
     "rain-day": "RAIN",
     "rain-night": "RAIN",
     "snow-day": "SNOW",
     "snow-night": "SNOW",
-    "fog-day": "FOG",
-    "fog-night": "FOG",
+    "mist-day": "FOG",
+    "mist-night": "FOG",
   };
   console.log("WeatherIcon received code:", props.code);
   return (
