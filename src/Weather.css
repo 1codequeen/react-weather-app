@@ -62,3 +62,9 @@ margin-right: 10px;
 margin-top: 5px;
 display:inline-block;
 }
+.WeatherTemperature .unit {
+  position: relative;
+  top: -24px;       
+  margin-left: 6px;
+  font-size: 14px;   
+}
