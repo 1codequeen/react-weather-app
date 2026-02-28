@@ -38,11 +38,10 @@
     align-items: center;
 }
 .weather-temperature{
-    height: 64px;
-    width: 64px;
     margin-right: 10px;
-  
 }
+  
+
 .temperature-container{
     display: flex;
     align-items: center;

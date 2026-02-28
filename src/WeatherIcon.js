@@ -16,12 +16,13 @@ export default function WeatherIcon(props) {
     "mist-day": "FOG",
     "mist-night": "FOG",
   };
-  console.log("WeatherIcon received code:", props.code);
+console.log("WeatherIcon received code:", props.code);
+
   return (
     <ReactAnimatedWeather
       icon={codeMapping[props.code]}
       color="#111111"
-      size={52}
+      size={props.size}
       animate={true}
     />
   );
