@@ -18,6 +18,7 @@ export default function Weather(props) {
       wind: response.data.wind.speed,
       date: new Date(response.data.time * 1000),
       code: response.data.condition.icon,
+      coordinates: response.data.coordinates,
     });
   }
 
@@ -36,7 +37,6 @@ export default function Weather(props) {
     setCity(event.target.value);
   }
 
-  
   if (!weatherData.ready) {
     search();
     return "Loading...";
@@ -65,7 +65,7 @@ export default function Weather(props) {
         </div>
       </form>
       <WeatherInfo data={weatherData} />
-      <WeatherForecast/>
+      <WeatherForecast coordinates={weatherData.coordinates} />
     </div>
   );
 }
