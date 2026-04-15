@@ -27,3 +27,4 @@ console.log("WeatherIcon received code:", props.code);
     />
   );
 }
+
